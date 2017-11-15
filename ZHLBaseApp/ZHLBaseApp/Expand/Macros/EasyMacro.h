@@ -23,6 +23,9 @@
 #define userDacData [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/userDacData.plist"]
 
 
+#define RGBCOLOR(r,g,b) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
+#define RGBACOLOR(r,g,b,a) [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
+
 //标题栏高度//状态栏
 #define Status_H 20
 #define Nav_H 64
@@ -61,6 +64,21 @@
 
 /** 弱指针*/
 #define EMWeakSelf(weakSelf) __weak __typeof(&*self)weakSelf = self;
+
+
+
+
+
+// 消息通知
+#define RegisterNotify(_name, _selector)                    \
+[[NSNotificationCenter defaultCenter] addObserver:self  \
+selector:_selector name:_name object:nil];
+
+#define RemoveNofify            \
+[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+#define SendNotify(_name, _object)  \
+[[NSNotificationCenter defaultCenter] postNotificationName:_name object:_object];
 
 
 #endif /* EasyMacro_h */

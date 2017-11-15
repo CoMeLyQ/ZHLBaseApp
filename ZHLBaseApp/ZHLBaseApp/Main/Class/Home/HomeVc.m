@@ -68,10 +68,11 @@
     [self.view addSubview:textField];
     
     
+    PLTextView * textview = [[PLTextView alloc]initWithFrame:CGRectMake(10, 200, 200, 200)];
+    textview.Placeholder = @"哈哈哈哈";
+    [self.view addSubview:textview];
     
     
-    UITableView * table = [RHMethods tableviewFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) style:UITableViewStyleGrouped delegate:self separatorStyle:UITableViewCellSeparatorStyleNone backColor:@"00aeef" cellIDArray:@[@"OneTableViewCell",@"ThreeTableViewCell",@"TwoTableViewCell"]];
-   
 //    [self.view addSubview:table];
     
 //    [self.mainTableView reloadData];

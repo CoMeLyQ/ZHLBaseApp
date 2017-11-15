@@ -1,185 +1,87 @@
-
+//
+//  UIView+Extension.m
+//  黑马微博2期
+//
+//  Created by apple on 14-10-7.
+//  Copyright (c) 2014年 heima. All rights reserved.
+//
 
 #import "UIView+Extension.h"
-#import <objc/runtime.h>
-
-static char kDTActionHandlerTapBlockKey;
-static char kDTActionHandlerTapGestureKey;
-static char kDTActionHandlerLongPressBlockKey;
-static char kDTActionHandlerLongPressGestureKey;
-
-@interface UIView ()
-
-@property(nonatomic,strong)UIActivityIndicatorView *activity;
-
-@end
 
 @implementation UIView (Extension)
 
--(void)startLoading
+- (void)setX:(CGFloat)x
 {
-    if (!self.activity) {
-        
-        UIActivityIndicatorView *temp_activity = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        temp_activity.frame = CGRectMake(0, 0, 20, 20);
-        temp_activity.center = CGPointMake(self.Sw/2, self.Sh/2);
-        
-        [temp_activity startAnimating];
-        self.activity = temp_activity;
-        [self addSubview:self.activity];
-    }
-}
--(void)stopLoding
-{
-    [self.activity stopAnimating];
-    [self.activity removeFromSuperview];
-    self.activity = nil;
-}
-// 在分类里添加属性
-static char AddressKey;
--(void)setActivity:(UIActivityIndicatorView *)activity
-{
-    objc_setAssociatedObject(self, &AddressKey, activity, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
--(UIActivityIndicatorView *)activity
-{
-    return objc_getAssociatedObject(self, &AddressKey);
+    CGRect frame = self.frame;
+    frame.origin.x = x;
+    self.frame = frame;
 }
 
-
--(void)addBorderWithcornerRad:(CGFloat)cornerRad lineCollor:(UIColor *)collor lineWidth:(CGFloat)lineWidth
+- (void)setY:(CGFloat)y
 {
-    self.layer.borderWidth = lineWidth;
-    self.cornerRad = cornerRad;
-    self.layer.borderColor = collor.CGColor;
-    
+    CGRect frame = self.frame;
+    frame.origin.y = y;
+    self.frame = frame;
 }
 
-- (void)setTapActionWithBlock:(void (^)(void))block
+- (CGFloat)x
 {
-    UITapGestureRecognizer *gesture = objc_getAssociatedObject(self, &kDTActionHandlerTapGestureKey);
-    
-    if (!gesture)
-    {
-        gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(__handleActionForTapGesture:)];
-        [self addGestureRecognizer:gesture];
-        objc_setAssociatedObject(self, &kDTActionHandlerTapGestureKey, gesture, OBJC_ASSOCIATION_RETAIN);
-    }
-    
-    objc_setAssociatedObject(self, &kDTActionHandlerTapBlockKey, block, OBJC_ASSOCIATION_COPY);
+    return self.frame.origin.x;
 }
 
-- (void)__handleActionForTapGesture:(UITapGestureRecognizer *)gesture
+- (CGFloat)y
 {
-    if (gesture.state == UIGestureRecognizerStateRecognized)
-    {
-        void(^action)(void) = objc_getAssociatedObject(self, &kDTActionHandlerTapBlockKey);
-        
-        if (action)
-        {
-            action();
-        }
-    }
+    return self.frame.origin.y;
 }
 
-- (void)setLongPressActionWithBlock:(void (^)(void))block
-{
-    UILongPressGestureRecognizer *gesture = objc_getAssociatedObject(self, &kDTActionHandlerLongPressGestureKey);
-    
-    if (!gesture)
-    {
-        gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(__handleActionForLongPressGesture:)];
-        [self addGestureRecognizer:gesture];
-        objc_setAssociatedObject(self, &kDTActionHandlerLongPressGestureKey, gesture, OBJC_ASSOCIATION_RETAIN);
-    }
-    
-    objc_setAssociatedObject(self, &kDTActionHandlerLongPressBlockKey, block, OBJC_ASSOCIATION_COPY);
-}
-
-- (void)__handleActionForLongPressGesture:(UITapGestureRecognizer *)gesture
-{
-    if (gesture.state == UIGestureRecognizerStateBegan)
-    {
-        void(^action)(void) = objc_getAssociatedObject(self, &kDTActionHandlerLongPressBlockKey);
-        
-        if (action)
-        {
-            action();
-        }
-    }
-}
-
--(void)setCornerRad:(CGFloat)cornerRad
-{
-    self.layer.cornerRadius = cornerRad;
-    self.layer.masksToBounds = YES;
-    
-}
--(CGFloat)cornerRad
-{
-    return self.cornerRad;
-}
--(void)setCy:(CGFloat)Cy
+- (void)setCenterX:(CGFloat)centerX
 {
     CGPoint center = self.center;
-    center.y = Cy;
+    center.x = centerX;
     self.center = center;
 }
--(CGFloat)Cy
-{
-    return self.center.y;
-}
--(void)setCx:(CGFloat)Cx
-{
-    CGPoint center = self.center;
-    center.x = Cx;
-    self.center = center;
-}
--(CGFloat)Cx
+
+- (CGFloat)centerX
 {
     return self.center.x;
 }
--(void)setSh:(CGFloat)Sh
+
+- (void)setCenterY:(CGFloat)centerY
 {
-    CGRect fram = self.frame;
-    fram.size.height = Sh;
-    self.frame = fram;
+    CGPoint center = self.center;
+    center.y = centerY;
+    self.center = center;
 }
--(CGFloat)Sh
+
+- (CGFloat)centerY
+{
+    return self.center.y;
+}
+
+- (void)setWidth:(CGFloat)width
+{
+    CGRect frame = self.frame;
+    frame.size.width = width;
+    self.frame = frame;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+    CGRect frame = self.frame;
+    frame.size.height = height;
+    self.frame = frame;
+}
+
+- (CGFloat)height
 {
     return self.frame.size.height;
 }
--(void)setSw:(CGFloat)Sw
-{
-    CGRect fram = self.frame;
-    fram.size.width = Sw;
-    self.frame = fram;
-}
--(CGFloat)Sw
+
+- (CGFloat)width
 {
     return self.frame.size.width;
 }
 
--(CGFloat)X
-{
-    return self.frame.origin.x;
-}
--(CGFloat)Y
-{
-    return self.frame.origin.y;
-}
--(void)setX:(CGFloat)X
-{
-    CGRect frame = self.frame;
-    frame.origin.x = X;
-    self.frame = frame;
-}
--(void)setY:(CGFloat)Y
-{
-    CGRect frame = self.frame;
-    frame.origin.y = Y;
-    self.frame = frame;
-}
 - (void)setSize:(CGSize)size
 {
     CGRect frame = self.frame;
@@ -192,60 +94,143 @@ static char AddressKey;
     return self.frame.size;
 }
 
--(void)setBlurStyle:(UIBlurEffectStyle)style
+- (void)setOrigin:(CGPoint)origin
 {
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:style];
-    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-    effectView.frame = self.bounds;
-    [self addSubview:effectView];
+    CGRect frame = self.frame;
+    frame.origin = origin;
+    self.frame = frame;
 }
--(void)removeBlur
+
+- (CGPoint)origin
 {
-    for (UIView *temp_view in self.subviews) {
-        
-        if ([temp_view isKindOfClass:[UIVisualEffectView class]]) {
-            
-            [temp_view removeFromSuperview];
+    return self.frame.origin;
+}
+-(void)setXXW:(CGFloat)XW{
+    
+    CGRect frame = self.frame;
+    
+    frame.origin.x = XW-frame.size.width;
+    self.frame = frame;
+}
+-(CGFloat)XXW{
+    
+    return self.frame.origin.x+self.frame.size.width;
+}
+-(void)setYYH:(CGFloat)YH{
+    CGRect frame = self.frame;
+    
+    frame.origin.y = YH-frame.size.height;
+    self.frame = frame;
+    
+}
+-(CGFloat)YYH{
+    
+    return self.frame.origin.y+self.frame.size.height;
+}
+-(void)beCenter{
+//    if
+    
+    UIView *view=self.superview;
+    if (view==nil) {
+        return;
+    }
+    self.centerX=view.frame.size.width/2;
+    self.centerY=view.frame.size.height/2;
+    
+}
+-(void)beCX{
+    UIView *view=self.superview;
+    if (view==nil) {
+        return;
+    }
+    self.centerX=view.frame.size.width/2;
+    
+    
+}
+-(void)beCY{
+    UIView *view=self.superview;
+    if (view==nil) {
+        return;
+    }
+    self.centerY=view.frame.size.height/2;
+    
+}
+
+
+-(void)beRound{
+    self.layer.masksToBounds=YES;
+    self.layer.cornerRadius=self.height*0.5;
+
+
+
+}
+-(void)setBBY:(CGFloat)BBY{
+    UIView *view=self.superview;
+    if (view==nil) {
+        return;
+    }
+    self.frame=CGRectMake(self.frame.origin.x, view.height-BBY-self.size.height, self.frame.size.width, self.frame.size.height);
+    
+}
+-(CGFloat)BBY{
+    UIView *view=self.superview;
+    if (view==nil) {
+        return 0;
+    }
+    return view.height-self.size.height-self.origin.y;
+    
+}
+
+-(void)setRRX:(CGFloat)RRX{
+    
+    UIView *view=self.superview;
+    if (view==nil) {
+        return;
+    }
+    self.frame=CGRectMake(view.frame.size.width-RRX-self.size.width, self.origin.y, self.frame.size.width, self.frame.size.height);
+    
+    
+}
+-(CGFloat)RRX{
+    UIView *view=self.superview;
+    if (view==nil) {
+        return 0;
+    }
+    
+    
+    return view.width-self.origin.x-self.size.width;
+    
+}
+
+
+
+
+
+- (UIViewController*)viewController {
+    for (UIView* next = [self superview]; next; next = next.superview) {
+        UIResponder* nextResponder = [next nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController*)nextResponder;
         }
     }
+    return nil;
 }
 
-+(UIView *)CreateTableWithFrame:(CGRect )frame Number:(int)Number spacing:(CGFloat)spacing
-{
-    
-    UIView *view = [[UIView alloc]initWithFrame:frame];
-    
-    
-    CGRect rect = CGRectMake(0, 0, view.Sw/Number - spacing, view.Sh/Number - spacing);
-    
-    
-    
-    for (int i = 1 ; i <= Number; i++ ) {
-        for (int j = 1; j <= Number; j++) {
-            UIButton *button = [[UIButton alloc]initWithFrame:rect];
-            [view addSubview:button];
-            [button setBackgroundColor:[UIColor brownColor]];
-            rect = CGRectOffset(rect, view.Sw/Number , 0);
-            if (j == Number) {
-                
-                button.Sw += view.Sw - CGRectGetMaxX(button.frame);
-            }
-            
-            if (i == Number) {
-                
-                button.Sh += view.Sh - CGRectGetMaxY(button.frame);
-            }
-        }
-        
-        rect.origin.x = 0;
-        rect.origin.y = rect.origin.y + view.Sh/Number;
-        
-        
-    }
+-(void)zaddTarget:(id)target select:(SEL)action{
 
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] init];
     
-    return view;
+    self.userInteractionEnabled=YES;
+    // 连续敲击2次,手势才能识别成功
+    tap.numberOfTapsRequired = 1;
+    tap.numberOfTouchesRequired = 1;
+    
+    // 2.添加手势识别器对象到对应的view
+    [self addGestureRecognizer:tap];
+    
+    // 3.添加监听方法(识别到了对应的手势,就会调用监听方法)
+    [tap addTarget:target action:action];
+
+
 }
-
-
 @end

@@ -44,9 +44,10 @@
 #import "UITextField+Extension.h"
 #import "UIView+DragAndReset.h"
 #import "UIView+Rotate.h"
-#import "UIView+Extension.h"
+#import "UIView+expanded.h"
 //快速创建类
 #import "RHMethods.h"
-
+//封装控件
+#import "PLTextView.h"
 
 #endif /* ZHLBaseApp_Prefix_pch */

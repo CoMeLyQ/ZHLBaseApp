@@ -136,6 +136,9 @@
 - (BOOL)isMinLength:(NSUInteger)min andMaxLength:(NSUInteger)max;
 - (BOOL)isEmpty;
 
-
+/////将NSString转化为NSArray或者NSDictionary
+-(id)JSONValue;
+/////将NSString转化为NSArray或者NSDictionary
+-(id)objectFromJSONString;
 
 @end
